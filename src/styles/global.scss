@@ -1,0 +1,63 @@
+
+@import './variables';
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+
+.container {
+  max-width: 1490px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 15px;
+  
+}
+
+
+body {
+
+      font-family: 'Montserrat', sans-serif;
+  background: $bg-root;
+  color: $text-dark;
+}
+
+.pageTitle {
+  color: $text-dark;
+}
+
+.heroCard {
+  background: $card-bg;
+  box-shadow: 0 4px 20px $shadow;
+}
+
+.cta {
+  background: linear-gradient(135deg, $primary-light, $primary-dark);
+  color: white;
+  box-shadow: 0 6px 12px rgba($primary, 0.6);
+}
+
+.marquee {
+  background: $secondary;
+  span { color: $primary; }
+}
+
+.card {
+  background: $card-bg;
+  box-shadow: 0 2px 12px $shadow;
+}
+
+.subtitle,
+.description,
+.countdownText {
+  color: $text-light;
+}
+
+.nameTag {
+  background: $card-bg;
+  box-shadow: 0 2px 8px $shadow;
+}
+
+// и т.д.
