@@ -1,84 +1,101 @@
-import React, { useState, useEffect } from 'react';
-import { FiCalendar } from 'react-icons/fi';
-import styles from './LandingPage.module.scss';
-import instructor from '../assets/s.png';
+import React, { useState, useEffect } from "react";
+import { FiCalendar } from "react-icons/fi";
+import { mobileBg } from "../utils/getImg";
 
 export default function LandingPage() {
-    const [timeLeft, setTimeLeft] = useState(60);
-    useEffect(() => {
-        const id = setInterval(() => {
-            setTimeLeft(t => (t > 0 ? t - 1 : 0));
-        }, 1000);
-        return () => clearInterval(id);
-    }, []);
-    const mm = String(Math.floor(timeLeft / 60)).padStart(2, '0');
-    const ss = String(timeLeft % 60).padStart(2, '0');
+  const [timeLeft, setTimeLeft] = useState(60);
+  useEffect(() => {
+    const id = setInterval(() => setTimeLeft((t) => (t > 0 ? t - 1 : 0)), 1000);
+    return () => clearInterval(id);
+  }, []);
 
-    return (
-        <div className={styles.root}>
-            <div className="container">
-                {/* Верхняя панель */}
-              
+  const mm = String(Math.floor(timeLeft / 60)).padStart(2, "0");
+  const ss = String(timeLeft % 60).padStart(2, "0");
 
-                {/* Основной блок — две колонки */}
-                <div className={styles.content}>
-                    
-                    {/* Левая колонка */}
-                    <div className={styles.left}>
-                          <div className={styles.topInfo}>
-                    <div className={styles.calendar}>
-                        <FiCalendar className={styles.calendarIcon} />
-                        <span className={styles.calendarText}>
-                            13–14–15&nbsp;may | 20:00
-                        </span>
-                    </div>
-                    <p className={styles.subtitle}>
-                       Iman Akhmedovna 3 kunlik bepul masterklass
-                    </p>
+  return (
+    <div className="root">
+      <div className="container">
+        <div className="content">
+          <div className="calendar">
+            <FiCalendar className="calendarIcon" />
+            <span className="calendarText">13–14–15 may | 20:00</span>
+          </div>
+          <p className="subtitle">
+            Iman Akhmedovna 3 kunlik <strong>bepul</strong> masterklass
+          </p>
+          <div className="mobile__img">
+            <img src={mobileBg} alt="" className="avatar" />
+             <div className="btn__box">
+              <button className="btn_mobile">Bepul qatnashish</button>
+
+              <div className="timerCard_btn">
+                <p className="timerText">
+                  Hozirroq ro‘yxatdan o‘ting! Joylar cheklangan!
+                </p>
+                <div className="timer">
+                  <div className="timeBlock">
+                    <div className="timeValue">{mm}</div>
+                    <div className="timeLabel">daqiqa</div>
+                  </div>
+                  <div className="timeBlock">
+                    <div className="timeValue">{ss}</div>
+                    <div className="timeLabel">soniya</div>
+                  </div>
                 </div>
-                        <h1 className={styles.title}>
-                            Nikoh yo‘lida to‘siqlar bormi? Yoki oilangizda sovuqlik sezilyaptimi?
-                        </h1>
-                        <h1 className={styles.title}>
-                            Marafon - 2 kun davomida yopiq telegram kanalda bo’ladi. Bu kanalga qo’shilish uchun ro’yxatdan o’ting! (2 daqiqa ichida ro’yxatdan o’tsangiz BEPUL)
-                        </h1>
-                        <p className={styles.desc}>
-                            3 kechalik BEPUL masterklassda quyidagilarni bilib olasiz:
-
-                        </p>
-                        <ul className={styles.list}>
-                            <li><span>✔️</span> Saodatli nikohga erishish uchun qo’rquv va vohimalardan xalos bo’lish. </li>
-                            <li><span>✔️</span> Xayrli turmush so’rash, erni moliyaviy barakasini oshirish uchun 5ta texnika.</li>
-                            <li><span>✔️</span> Er xotin munosobatlari yomonlashuvi, 3-shaxslar aralashuvi, nega xiyonatga uchrash sabablari va Allohdan shokoladlar so’rash sirlari haqida o’rganasiz</li>
-                        </ul>
-                        <button className={styles.btn}>Bepul qatnashish</button>
-                        <div className={styles.timerCard}>
-                            <div className={styles.timerText}>
-                                Hozirroq ro‘yxatdan o‘ting! Joylar cheklangan!
-                            </div>                              
-                            <div className={styles.timer}>
-                                <div>
-                                    <div className={styles.timeValue}>{mm}</div>
-                                    <div className={styles.timeLabel}>daqiqa</div>
-                                </div>
-                                <div>
-                                    <div className={styles.timeValue}>{ss}</div>
-                                    <div className={styles.timeLabel}>soniya</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Правая колонка */}
-                    <div className={styles.right}>
-                        <img src={instructor} alt="Instructor" className={styles.photo} />
-                        <div className={styles.nameTag}>
-                            <div className={styles.name}>Iman<strong>Akhmedovna</strong></div>
-                            <div className={styles.prof}>Oilaviy munosabatlar va bolalar psixologi</div>
-                        </div>
-                    </div>
-                </div>
+              </div>
             </div>
+          </div>
+          
+          <div className="left">
+            <div className="topInfo"></div>
+
+            <h1 className="title">
+              Nikoh yo‘lida to‘siqlar bormi? <br />
+              Yoki oilangizda sovuqlik sezilyaptimi?
+            </h1>
+            <p className="lead">
+              Marafon — <strong>2 kun</strong> yopiq Telegram-kanalda bo‘ladi.
+              Ro‘yxatdan o‘ting — (<strong>2 daqiqa ichida</strong> BEPUL)
+            </p>
+            <p className="desc">
+              3 kechalik BEPUL masterklassda quyidagilarni bilib olasiz:
+            </p>
+            <ul className="list">
+              <li>
+                Saodatli nikohga erishish uchun qo‘rq­uv va vohimalardan xalos
+                bo‘lish
+              </li>
+              <li>
+                Xayr­li turmush so‘rash, erni moliyaviy barakasini oshirish
+                uchun 5 ta texnika
+              </li>
+              <li>
+                Er-xotin munosabatlari yomonlashuvi, 3-shaxslar aralashuvi va
+                xiyonat sabablari
+              </li>
+            </ul>
+            <div className="btn__box">
+              <button className="btn">Bepul qatnashish</button>
+
+              <div className="timerCard">
+                <p className="timerText">
+                  Hozirroq ro‘yxatdan o‘ting! Joylar cheklangan!
+                </p>
+                <div className="timer">
+                  <div className="timeBlock">
+                    <div className="timeValue">{mm}</div>
+                    <div className="timeLabel">daqiqa</div>
+                  </div>
+                  <div className="timeBlock">
+                    <div className="timeValue">{ss}</div>
+                    <div className="timeLabel">soniya</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-    );
+      </div>
+    </div>
+  );
 }

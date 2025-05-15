@@ -1,63 +1,394 @@
+@import "./variables";
 
-@import './variables';
+// 1. Сброс
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-
-
+// 2. Контейнер
 .container {
-  max-width: 1490px;
+  max-width: 1140px;
   width: 100%;
   margin: 0 auto;
   padding: 0 15px;
+}
+
+// 3. HTML & Body
+body {
+  font-family: "Montserrat", sans-serif;
+}
+
+// 4. Фоновая секция
+.root {
+  min-height: 100vh; // минимум под экран
+  background-image: url("../assets/bg5.jpg");
+  background-position: center top; // позиционируем фон с верхнего центра
+  background-repeat: no-repeat;
+  background-size: cover; // покрываем всю ширину, высота масштабируется пропорц.
   
 }
 
+// 5. Флекс-контент
+.content {
+  padding-top: 50px;
+  padding-bottom: 50px;
+  max-width: 600px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
 
-body {
+.calendar {
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: white;
+    border-radius: 20px;
+    padding: 0.5rem 1rem;
+    box-shadow: 0 2px 8px $shadow;
+    .calendarIcon {
+      color: $primary;
+      font-size: 1.7rem;
+      
+    }
+    .calendarText {
+      font-size: 24px;
+      font-weight: 600;
+      color: $text-dark;
+    }
+  }
 
-      font-family: 'Montserrat', sans-serif;
-  background: $bg-root;
+  .subtitle {
+    margin-top: 0.5rem;
+    font-size: 20px;
+    font-weight: 400;
+    color: $text-dark;
+    strong {
+      color: $primary;
+    }
+  }
+
+// 6. Левая колонка
+.left {
+
+  flex: 1;
+ 
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  gap: 1.5rem;
+}
+
+
+// 7. Топ-инфо
+
+
+// 8. Заголовки и тексты
+.title {
+ 
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: $text-dark;
+}
+.lead {
+ 
+  font-size: 25px;
+  color: $text-dark;
+  max-width: 600px;
+  margin: 0 auto;
+  strong {
+    color: $primary;
+  }
+}
+.desc {
+
+  font-size: 24px;
   color: $text-dark;
 }
 
-.pageTitle {
-  color: $text-dark;
+// 9. Список
+.list {
+  list-style: none;
+  padding: 0;
+  font-size: 20px;
+  li {
+    position: relative;
+    padding-left: 1.75rem;
+    margin-bottom: 0.75rem;
+    color: $text-dark;
+    &::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: $primary;
+    }
+  }
 }
 
-.heroCard {
-  background: $card-bg;
-  box-shadow: 0 4px 20px $shadow;
-}
-
-.cta {
-  background: linear-gradient(135deg, $primary-light, $primary-dark);
+// 10. Кнопка
+.btn {
+  position: relative;
+  overflow: hidden;
+  display: block;
+  width: 100%;
+  
+  margin: 0 auto 1.5rem;
+  padding: 1rem 2rem;
+  font-size: 2.225rem;
+  font-weight: 600;
+  text-align: center;
   color: white;
-  box-shadow: 0 6px 12px rgba($primary, 0.6);
+  background: linear-gradient(
+    135deg,
+    lighten($primary, 5%),
+    darken($primary, 5%)
+  );
+  border: none;
+  border-radius: 50px;
+  box-shadow: 0 4px 12px $shadow;
+  transition: transform 0.2s;
+  &:hover {
+    transform: translateY(-2px);
+  }
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -50%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+      120deg,
+      transparent,
+      rgba(255, 255, 255, 0.4),
+      transparent
+    );
+    transform: skewX(-20deg);
+    transition: left 0.7s;
+  }
+  &:hover::after {
+    left: 150%;
+  }
 }
 
-.marquee {
-  background: $secondary;
-  span { color: $primary; }
+.btn_mobile {
+   position: relative;
+  overflow: hidden;
+  display: block;
+  width: 100%;
+  
+  margin: 0 auto 1.5rem;
+  padding: 2rem 2rem;
+  font-size: 3.225rem;
+  font-weight: 600;
+  text-align: center;
+  color: white;
+  background: linear-gradient(
+    135deg,
+    lighten($primary, 5%),
+    darken($primary, 5%)
+  );
+  border: none;
+  border-radius: 50px;
+  box-shadow: 0 4px 12px $shadow;
+  transition: transform 0.2s;
+  &:hover {
+    transform: translateY(-2px);
+  }
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -50%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+      120deg,
+      transparent,
+      rgba(255, 255, 255, 0.4),
+      transparent
+    );
+    transform: skewX(-20deg);
+    transition: left 0.7s;
+  }
+  &:hover::after {
+    left: 150%;
+  }
 }
 
-.card {
-  background: $card-bg;
-  box-shadow: 0 2px 12px $shadow;
-}
-
-.subtitle,
-.description,
-.countdownText {
-  color: $text-light;
-}
-
-.nameTag {
-  background: $card-bg;
+// 11. Таймер
+.timerCard {
+  background: white;
   box-shadow: 0 2px 8px $shadow;
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  .timerText {
+    font-size: 1.1rem;
+    color: $text-dark;
+  }
+  .timer {
+    display: flex;
+    gap: 1.5rem;
+    .timeBlock {
+      text-align: center;
+      .timeValue {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: $primary;
+      }
+      .timeLabel {
+        font-size: 0.95rem;
+        color: $text-dark;
+      }
+    }
+  }
 }
 
-// и т.д.
+.timerCard_btn {
+  background: white;
+  box-shadow: 0 2px 8px $shadow;
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  .timerText {
+    font-size: 1.1rem;
+    color: $text-dark;
+  }
+  .timer {
+    display: flex;
+    gap: 1.5rem;
+    .timeBlock {
+      text-align: center;
+      .timeValue {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: $primary;
+      }
+      .timeLabel {
+        font-size: 0.95rem;
+        color: $text-dark;
+      }
+    }
+  }
+}
+
+// 12. Визитка
+.nameTag {
+  position: absolute;
+  bottom: 2rem;
+  right: 2rem;
+  background: $card-bg;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px $shadow;
+  text-align: center;
+  .name {
+    font-size: 1.25rem;
+    color: $text-dark;
+    strong {
+      color: $primary;
+    }
+  }
+  .prof {
+    font-size: 0.875rem;
+    color: $text-dark;
+  }
+}
+
+.mobile__img {
+  display: none;
+}
+
+
+
+
+
+
+@media (max-width: 1100px) {
+  .root {
+  min-height: 100vh; // минимум под экран
+  background-image: url("../assets/defaultBg.jpg");
+  background-position: center top; // позиционируем фон с верхнего центра
+  background-size: cover; // покрываем всю ширину, высота масштабируется пропорц.
+  
+}
+
+.btn_mobile {
+  transform: translateY(-10%);
+}
+
+.content {
+  max-width: 1100px;
+  width: 100%;
+}
+
+.calendar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.subtitle {
+  text-align: center;
+}
+
+.title {
+  text-align: center;
+}
+
+.lead {
+  text-align: center;
+}
+
+.desc {
+  text-align: center;
+}
+
+.list {
+  text-align: center;
+}
+
+.timerCard_btn {
+  flex-direction: column-reverse;
+}
+
+.left  {
+  width: 100%;
+}
+
+
+.mobile__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  
+}
+
+.avatar {
+  width: 100%;
+
+}
+
+.timerCard{
+  display: none;
+} 
+
+.btn {
+  padding: 2rem 2rem;
+}
+
+}

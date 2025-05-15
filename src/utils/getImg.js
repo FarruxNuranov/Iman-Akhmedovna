@@ -1,0 +1,1 @@
+export { default as mobileBg} from "../assets/mobileBg.png"
