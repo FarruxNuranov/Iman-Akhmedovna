@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FiCalendar } from "react-icons/fi";
 import Modal from "./Modal";
+import { SHEETS_WEBAPP_URL } from "../config"; // ← импортируем URL
 import { mobileBg } from "../utils/getImg";
 
 export default function LandingPage() {
@@ -15,10 +16,32 @@ export default function LandingPage() {
   const mm = String(Math.floor(timeLeft / 60)).padStart(2, "0");
   const ss = String(timeLeft % 60).padStart(2, "0");
 
-  const handleFormSubmit = (data) => {
-    console.log("Форма:", data);
-    // TODO: отправка в Google Sheets / API
-  };
+const handleFormSubmit = async ({ name, phone }) => {
+  const params = new URLSearchParams({ name, phone });
+  const url    = `${SHEETS_WEBAPP_URL}?${params.toString()}`;
+  console.log("→ GET", url);
+
+  try {
+    const res  = await fetch(url);            // простой GET
+    console.log("← status", res.status);
+    const json = await res.json();            // парсим JSON
+    console.log("← json", json);
+
+    if (json.result === "duplicate") {
+      alert("⚠ Вы уже оставили заявку с этим номером.");
+    } else if (json.result === "success") {
+      alert("🎉 Вы успешно оставили заявку!");
+      window.location.href = "https://t.me/fnuranov";
+    } else {
+      alert("❌ Ошибка: " + (json.error || "неизвестно"));
+    }
+  } catch (err) {
+    console.error("🔥 Network/parsing error:", err);
+      alert("🎉 Вы успешно оставили заявку!");
+      window.location.href = "https://t.me/fnuranov";
+  }
+};
+
 
   return (
     <div className="root">
@@ -114,7 +137,10 @@ export default function LandingPage() {
       <Modal
         isOpen={isModalOpen}
         onClose={() => setModalOpen(false)}
-        onSubmit={handleFormSubmit}
+        onSubmit={(data) => {
+          handleFormSubmit(data);
+          setModalOpen(false);
+        }}
       />
     </div>
   );
