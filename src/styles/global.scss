@@ -9,7 +9,7 @@
 
 // 2. Контейнер
 .container {
-  max-width: 1140px;
+  max-width: 1240px;
   width: 100%;
   margin: 0 auto;
   padding: 0 15px;
@@ -34,7 +34,7 @@ body {
 .content {
   padding-top: 50px;
   padding-bottom: 50px;
-  max-width: 600px;
+  max-width: 650px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -96,17 +96,17 @@ body {
   color: $text-dark;
 }
 .lead {
- 
+  
   font-size: 25px;
   color: $text-dark;
   max-width: 600px;
-  margin: 0 auto;
+
   strong {
     color: $primary;
   }
 }
 .desc {
-
+  font-weight: 600;
   font-size: 24px;
   color: $text-dark;
 }
@@ -391,4 +391,33 @@ body {
   padding: 2rem 2rem;
 }
 
+}
+
+@media (max-width: 550px) {
+   
+
+  .btn_mobile {
+    font-size: 30px
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .lead {
+    font-size: 18px;
+  }
+
+  .desc {
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  .list {
+    font-size: 20px;
+  }
+
+  .btn  {
+    font-size: 30px;
+  }
 }
