@@ -16,34 +16,44 @@ export default function Modal({ isOpen, onClose }) {
     if (!value.startsWith("+998")) return;
     setPhone(value.replace(/[^\d+]/g, ""));
   };
+
+
 const handleSubmit = async (e) => {
   e.preventDefault();
 
   const cleanedPhone = "+" + phone.replace(/[^\d]/g, "");
-
-  const url = `https://script.google.com/macros/s/AKfycbzTMev__3oYGJ-bqLqh5qLphX9PcjPeMW6V0dgOuq1BxF0AGyrJ2iwOmVluUUOLCuZx/exec?name=${encodeURIComponent(
-    name
-  )}&phone=${encodeURIComponent(cleanedPhone)}`;
+  const url = `https://script.google.com/macros/s/AKfycbzTMev__3oYGJ-bqLqh5qLphX9PcjPeMW6V0dgOuq1BxF0AGyrJ2iwOmVluUUOLCuZx/exec?name=${encodeURIComponent(name)}&phone=${encodeURIComponent(cleanedPhone)}`;
 
   try {
-    const res = await fetch(url);
-    const data = await res.json();
+    const res = await fetch(url); // <- CORS-срабатывает, но не мешает получить сам ответ
+    const text = await res.text(); // читаем вручную
+    console.log("📦 Response Text:", text);
+
+    let data = {};
+    try {
+      data = JSON.parse(text);
+    } catch (err) {
+      console.error("❌ JSON parse error:", err);
+      alert("Сервер ответил некорректно.");
+      return;
+    }
 
     if (data.result === "duplicate") {
-      alert("Этот номер уже есть.");
+      alert("⚠️ Такой номер уже зарегистрирован.");
     } else if (data.result === "success") {
-      alert("Заявка отправлена!");
+      alert("✅ Успешно отправлено!");
       setName("");
       setPhone("+998");
       onClose();
     } else {
-      alert("Ошибка: " + (data.message || "неизвестно"));
+      alert("❌ Неизвестный ответ: " + text);
     }
   } catch (err) {
-    alert("Ошибка сети");
-    console.error(err);
+    console.error("🔥 Fetch/network error:", err);
+    alert("🔥 Ошибка соединения с сервером");
   }
 };
+
 
   
   return (
