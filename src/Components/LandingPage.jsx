@@ -3,10 +3,13 @@ import { FiCalendar } from "react-icons/fi";
 import Modal from "./Modal";
 import { SHEETS_WEBAPP_URL } from "../config"; // ← импортируем URL
 import { mobileBg } from "../utils/getImg";
+import { useNavigate } from "react-router-dom";
 
 export default function LandingPage() {
   const [timeLeft, setTimeLeft] = useState(60);
   const [isModalOpen, setModalOpen] = useState(false);
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     const id = setInterval(() => setTimeLeft((t) => (t > 0 ? t - 1 : 0)), 1000);
@@ -31,14 +34,14 @@ const handleFormSubmit = async ({ name, phone }) => {
       alert("⚠ Вы уже оставили заявку с этим номером.");
     } else if (json.result === "success") {
       alert("🎉 Вы успешно оставили заявку!");
-      window.location.href = "https://t.me/fnuranov";
+     
     } else {
       alert("❌ Ошибка: " + (json.error || "неизвестно"));
     }
   } catch (err) {
     console.error("🔥 Network/parsing error:", err);
-      alert("🎉 Вы успешно оставили заявку!");
-      window.location.href = "https://t.me/fnuranov";
+   
+      navigate("/telegram")
   }
 };
 
