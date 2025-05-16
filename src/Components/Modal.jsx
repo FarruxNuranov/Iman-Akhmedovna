@@ -1,9 +1,10 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Modal({ isOpen, onClose }) {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("+998");
-
+  const navigate = useNavigate()
   if (!isOpen) return null;
 
   const handleBackdropClick = (e) => {
@@ -42,7 +43,7 @@ const handleSubmit = async (e) => {
     if (data.result === "duplicate") {
       alert("⚠️ Такой номер уже есть.");
     } else if (data.result === "success") {
-      alert("✅ Заявка отправлена!");
+      navigate('/telegram')
       setName("");
       setPhone("+998");
       onClose();
@@ -61,10 +62,10 @@ const handleSubmit = async (e) => {
         <button className="modal__close" onClick={onClose}>
           ×
         </button>
-        <h2 className="modal__title">Заявка на участие</h2>
+        <h2 className="modal__title">Ro`yxatdan o`tish</h2>
         <form onSubmit={handleSubmit} className="modal__form">
           <label>
-            Имя Фамилия
+            Ismingizni kiriting
             <input
               type="text"
               value={name}
@@ -73,7 +74,7 @@ const handleSubmit = async (e) => {
             />
           </label>
           <label>
-            Телефон
+            Telefon raqami
             <input
               type="tel"
               value={phone}

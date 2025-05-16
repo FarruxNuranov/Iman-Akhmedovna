@@ -5,16 +5,14 @@ import { FiCalendar } from "react-icons/fi";
 import Modal from "./Modal";
 import { mobileBg } from "../utils/getImg";
 
-
 export default function LandingPage() {
   // 1) Таймер на 30 секунд
   const [timeLeft, setTimeLeft] = useState(30);
   const [isModalOpen, setModalOpen] = useState(false);
-  
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setTimeLeft(prev => {
+      setTimeLeft((prev) => {
         if (prev <= 1) {
           // 2) По истечении открываем модалку и сбрасываем
           setModalOpen(true);
@@ -28,10 +26,6 @@ export default function LandingPage() {
 
   const mm = String(Math.floor(timeLeft / 60)).padStart(2, "0");
   const ss = String(timeLeft % 60).padStart(2, "0");
-
-
- 
-
 
   return (
     <div className="root">
@@ -50,10 +44,7 @@ export default function LandingPage() {
           <div className="mobile__img">
             <img src={mobileBg} alt="" className="avatar" />
             <div className="btn__box">
-              <button
-                className="btn_mobile"
-                onClick={() => setModalOpen(true)}
-              >
+              <button className="btn_mobile" onClick={() => setModalOpen(true)}>
                 Bepul qatnashish
               </button>
               <div className="timerCard_btn">
@@ -81,7 +72,7 @@ export default function LandingPage() {
               Yoki oilangizda sovuqlik sezilyaptimi?
             </h1>
             <p className="lead">
-              Marafon — <strong>2 kun</strong> yopiq Telegram-kanalda bo‘ladi.
+              Master klass- 3 kun yopiq telegram kanalda bo’ladi.
               <br />
               Ro‘yxatdan o‘ting — (<strong>2 daqiqa ichida</strong> BEPUL)
             </p>
@@ -89,9 +80,18 @@ export default function LandingPage() {
               3 kechalik BEPUL masterklassda quyidagilarni bilib olasiz:
             </p>
             <ul className="list">
-              <li>Saodatli nikohga erishish uchun qo‘rq­uv va vohimalardan xalos bo‘lish</li>
-              <li>Xayr­li turmush so‘rash, erni moliyaviy barakasini oshirish uchun 5 ta texnika</li>
-              <li>Er-xotin munosabatlari yomonlashuvi, 3-shaxslar aralashuvi va xiyonat sabablari</li>
+              <li>
+                Saodatli nikohga erishish uchun qo‘rq­uv va vohimalardan xalos
+                bo‘lish
+              </li>
+              <li>
+                Xayr­li turmush so‘rash, erni moliyaviy barakasini oshirish
+                uchun 5 ta texnika
+              </li>
+              <li>
+                Er-xotin munosabatlari yomonlashuvi, 3-shaxslar aralashuvi va
+                xiyonat sabablari
+              </li>
             </ul>
             <div className="btn__box">
               <button className="btn" onClick={() => setModalOpen(true)}>
@@ -118,9 +118,6 @@ export default function LandingPage() {
           <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)} />
         </div>
       </div>
-
-
-    
     </div>
   );
 }
