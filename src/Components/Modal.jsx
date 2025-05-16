@@ -16,48 +16,44 @@ export default function Modal({ isOpen, onClose }) {
     setPhone(value.replace(/[^\d+]/g, ""));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
 
-    const cleanedPhone = "+" + phone.replace(/[^\d]/g, "");
-    const scriptUrl =
-      "https://script.google.com/macros/s/AKfycbzTMev__3oYGJ-bqLqh5qLphX9PcjPeMW6V0dgOuq1BxF0AGyrJ2iwOmVluUUOLCuZx/exec";
-    const proxyUrl = "https://corsproxy.io/?";
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    const finalUrl = `${proxyUrl}${encodeURIComponent(
-      scriptUrl
-    )}?name=${encodeURIComponent(name)}&phone=${encodeURIComponent(
-      cleanedPhone
-    )}`;
+  const cleanedPhone = phone.replace(/[^\d]/g, ""); // Удаляем всё кроме цифр
+  const finalPhone = "+" + cleanedPhone;            // Добавляем +
 
+  const scriptUrl = "https://script.google.com/macros/s/bqLqh5qLphX9PcjPeMW6V0dgOuq1BxF0AGyrJ2iwOmVluUUOLCuZx/exec";
+  const proxyUrl = "https://corsproxy.io/?";
+  const finalUrl = `${proxyUrl}${encodeURIComponent(scriptUrl)}?name=${encodeURIComponent(name)}&phone=${encodeURIComponent(finalPhone)}`;
+
+  try {
+    const res = await fetch(finalUrl);
+    const text = await res.text();
+
+    let data = {};
     try {
-      const res = await fetch(finalUrl);
-      const text = await res.text();
-      console.log("📦 Прокси ответ:", text);
-
-      let data = {};
-      try {
-        data = JSON.parse(text);
-      } catch (err) {
-        alert("⚠️ Ответ сервера не JSON");
-        return;
-      }
-
-      if (data.result === "duplicate") {
-        alert("⚠️ Такой номер уже есть.");
-      } else if (data.result === "success") {
-        alert("✅ Заявка отправлена!");
-        setName("");
-        setPhone("+998");
-        onClose();
-      } else {
-        alert("❌ Неизвестный ответ: " + text);
-      }
+      data = JSON.parse(text);
     } catch (err) {
-      console.error("🔥 Network/proxy error:", err);
-      alert("🔥 Ошибка соединения с сервером");
+      alert("⚠️ Ответ сервера не JSON");
+      return;
     }
-  };
+
+    if (data.result === "duplicate") {
+      alert("⚠️ Такой номер уже есть.");
+    } else if (data.result === "success") {
+      alert("✅ Заявка отправлена!");
+      setName("");
+      setPhone("+998");
+      onClose();
+    } else {
+      alert("❌ Неизвестный ответ: " + text);
+    }
+  } catch (err) {
+    console.error("🔥 Network/proxy error:", err);
+    alert("🔥 Ошибка соединения с сервером");
+  }
+};
 
   return (
     <div className="modal__backdrop" onClick={handleBackdropClick}>
