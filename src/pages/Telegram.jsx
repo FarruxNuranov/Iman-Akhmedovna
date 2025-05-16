@@ -27,7 +27,7 @@ export default function Telegram() {
           </div>
 
           <a
-            href="https://t.me/YourChannelLink"
+            href="https://t.me/fnuranov"
             target="_blank"
             rel="noopener noreferrer"
             className="telegram-btn"
