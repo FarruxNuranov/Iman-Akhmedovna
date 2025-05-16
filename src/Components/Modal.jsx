@@ -23,7 +23,7 @@ const handleSubmit = async (e) => {
   const cleanedPhone = phone.replace(/[^\d]/g, ""); // Удаляем всё кроме цифр
   const finalPhone = "+" + cleanedPhone;            // Добавляем +
 
-  const scriptUrl = "https://script.google.com/macros/s/bqLqh5qLphX9PcjPeMW6V0dgOuq1BxF0AGyrJ2iwOmVluUUOLCuZx/exec";
+  const scriptUrl = "https://script.google.com/macros/s/AKfycbzTMev__3oYGJ-bqLqh5qLphX9PcjPeMW6V0dgOuq1BxF0AGyrJ2iwOmVluUUOLCuZx/exec";
   const proxyUrl = "https://corsproxy.io/?";
   const finalUrl = `${proxyUrl}${encodeURIComponent(scriptUrl)}?name=${encodeURIComponent(name)}&phone=${encodeURIComponent(finalPhone)}`;
 
