@@ -27,7 +27,7 @@ const handleSubmit = async (e) => {
   try {
     const res = await fetch(url); // <- CORS-срабатывает, но не мешает получить сам ответ
     const text = await res.text(); // читаем вручную
-    console.log("📦 Response Text:", text);
+    
 
     let data = {};
     try {
