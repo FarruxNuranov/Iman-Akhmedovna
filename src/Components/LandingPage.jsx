@@ -3,15 +3,14 @@
 import React, { useState, useEffect } from "react";
 import { FiCalendar } from "react-icons/fi";
 import Modal from "./Modal";
-import { SHEETS_WEBAPP_URL } from "../config";
 import { mobileBg } from "../utils/getImg";
-import { useNavigate } from "react-router-dom";
+
 
 export default function LandingPage() {
   // 1) Таймер на 30 секунд
   const [timeLeft, setTimeLeft] = useState(30);
   const [isModalOpen, setModalOpen] = useState(false);
-  const navigate = useNavigate();
+  
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -30,33 +29,9 @@ export default function LandingPage() {
   const mm = String(Math.floor(timeLeft / 60)).padStart(2, "0");
   const ss = String(timeLeft % 60).padStart(2, "0");
 
-  // 3) Обработчик закрытия модалки (кнопка Cancel)
-  const handleModalClose = () => {
-    setModalOpen(false);
-    setTimeLeft(30);
-  };
 
-  // 4) Отправка в Google Sheets (через ваш WebApp URL)
-  const handleFormSubmit = async ({ name, phone }) => {
-    try {
-      const params = new URLSearchParams({ name, phone });
-      const url = `${SHEETS_WEBAPP_URL}?${params.toString()}`;
-      const res = await fetch(url, { method: "GET" });
-      const json = await res.json();
+ 
 
-      if (json.result === "duplicate") {
-        alert("⚠ Вы уже оставили заявку с этим номером.");
-      } else if (json.result === "success") {
-        alert("🎉 Вы успешно оставили заявку!");
-      } else {
-        alert("❌ Ошибка: " + (json.error || "неизвестно"));
-      }
-    } catch (err) {
-      console.error("Network/parsing error:", err);
-      // если что-то пошло не так — ведём пользователя на страницу с кнопкой подписки
-      navigate("/telegram");
-    }
-  };
 
   return (
     <div className="root">
@@ -139,15 +114,13 @@ export default function LandingPage() {
               </div>
             </div>
           </div>
+
+          <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)} />
         </div>
       </div>
 
-      {/* Модальное окно */}
-      <Modal
-        isOpen={isModalOpen}
-        onClose={handleModalClose}
-        onSubmit={handleFormSubmit}
-      />
+
+    
     </div>
   );
 }
