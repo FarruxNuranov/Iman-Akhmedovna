@@ -1,50 +1,62 @@
+// src/components/LandingPage.jsx
+
 import React, { useState, useEffect } from "react";
 import { FiCalendar } from "react-icons/fi";
 import Modal from "./Modal";
-import { SHEETS_WEBAPP_URL } from "../config"; // ← импортируем URL
+import { SHEETS_WEBAPP_URL } from "../config";
 import { mobileBg } from "../utils/getImg";
 import { useNavigate } from "react-router-dom";
 
 export default function LandingPage() {
-  const [timeLeft, setTimeLeft] = useState(60);
+  // 1) Таймер на 30 секунд
+  const [timeLeft, setTimeLeft] = useState(30);
   const [isModalOpen, setModalOpen] = useState(false);
-
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const id = setInterval(() => setTimeLeft((t) => (t > 0 ? t - 1 : 0)), 1000);
-    return () => clearInterval(id);
+    const interval = setInterval(() => {
+      setTimeLeft(prev => {
+        if (prev <= 1) {
+          // 2) По истечении открываем модалку и сбрасываем
+          setModalOpen(true);
+          return 30;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => clearInterval(interval);
   }, []);
 
   const mm = String(Math.floor(timeLeft / 60)).padStart(2, "0");
   const ss = String(timeLeft % 60).padStart(2, "0");
 
-const handleFormSubmit = async ({ name, phone }) => {
-  const params = new URLSearchParams({ name, phone });
-  const url    = `${SHEETS_WEBAPP_URL}?${params.toString()}`;
-  console.log("→ GET", url);
+  // 3) Обработчик закрытия модалки (кнопка Cancel)
+  const handleModalClose = () => {
+    setModalOpen(false);
+    setTimeLeft(30);
+  };
 
-  try {
-    const res  = await fetch(url);            // простой GET
-    console.log("← status", res.status);
-    const json = await res.json();            // парсим JSON
-    console.log("← json", json);
+  // 4) Отправка в Google Sheets (через ваш WebApp URL)
+  const handleFormSubmit = async ({ name, phone }) => {
+    try {
+      const params = new URLSearchParams({ name, phone });
+      const url = `${SHEETS_WEBAPP_URL}?${params.toString()}`;
+      const res = await fetch(url, { method: "GET" });
+      const json = await res.json();
 
-    if (json.result === "duplicate") {
-      alert("⚠ Вы уже оставили заявку с этим номером.");
-    } else if (json.result === "success") {
-      alert("🎉 Вы успешно оставили заявку!");
-     
-    } else {
-      alert("❌ Ошибка: " + (json.error || "неизвестно"));
+      if (json.result === "duplicate") {
+        alert("⚠ Вы уже оставили заявку с этим номером.");
+      } else if (json.result === "success") {
+        alert("🎉 Вы успешно оставили заявку!");
+      } else {
+        alert("❌ Ошибка: " + (json.error || "неизвестно"));
+      }
+    } catch (err) {
+      console.error("Network/parsing error:", err);
+      // если что-то пошло не так — ведём пользователя на страницу с кнопкой подписки
+      navigate("/telegram");
     }
-  } catch (err) {
-    console.error("🔥 Network/parsing error:", err);
-   
-      navigate("/telegram")
-  }
-};
-
+  };
 
   return (
     <div className="root">
@@ -63,7 +75,10 @@ const handleFormSubmit = async ({ name, phone }) => {
           <div className="mobile__img">
             <img src={mobileBg} alt="" className="avatar" />
             <div className="btn__box">
-              <button className="btn_mobile" onClick={() => setModalOpen(true)}>
+              <button
+                className="btn_mobile"
+                onClick={() => setModalOpen(true)}
+              >
                 Bepul qatnashish
               </button>
               <div className="timerCard_btn">
@@ -99,18 +114,9 @@ const handleFormSubmit = async ({ name, phone }) => {
               3 kechalik BEPUL masterklassda quyidagilarni bilib olasiz:
             </p>
             <ul className="list">
-              <li>
-                Saodatli nikohga erishish uchun qo‘rq­uv va vohimalardan xalos
-                bo‘lish
-              </li>
-              <li>
-                Xayr­li turmush so‘rash, erni moliyaviy barakasini oshirish
-                uchun 5 ta texnika
-              </li>
-              <li>
-                Er-xotin munosabatlari yomonlashuvi, 3-shaxslar aralashuvi va
-                xiyonat sabablari
-              </li>
+              <li>Saodatli nikohga erishish uchun qo‘rq­uv va vohimalardan xalos bo‘lish</li>
+              <li>Xayr­li turmush so‘rash, erni moliyaviy barakasini oshirish uchun 5 ta texnika</li>
+              <li>Er-xotin munosabatlari yomonlashuvi, 3-shaxslar aralashuvi va xiyonat sabablari</li>
             </ul>
             <div className="btn__box">
               <button className="btn" onClick={() => setModalOpen(true)}>
@@ -139,11 +145,8 @@ const handleFormSubmit = async ({ name, phone }) => {
       {/* Модальное окно */}
       <Modal
         isOpen={isModalOpen}
-        onClose={() => setModalOpen(false)}
-        onSubmit={(data) => {
-          handleFormSubmit(data);
-          setModalOpen(false);
-        }}
+        onClose={handleModalClose}
+        onSubmit={handleFormSubmit}
       />
     </div>
   );

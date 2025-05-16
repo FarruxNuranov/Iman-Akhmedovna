@@ -318,8 +318,14 @@ body {
 /* модальное затемнение */
 .modal__backdrop {
   position: fixed;
+    backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);       // для Safari
+
+  /* чуть больше приоритета, чтобы быть над всем */
+  z-index: 1000;
   inset: 0;
-  background: rgba(0,0,0,0.4);
+  background: rgba(17, 14, 14, 0.224);
+  
   display: flex;
   align-items: center;
   justify-content: center;
@@ -470,7 +476,11 @@ body {
   font-size: 1.5rem;
 }
 
-
+.modal__error {
+  color: red;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
 
 
 @media (max-width: 1100px) {
