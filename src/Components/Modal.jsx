@@ -76,7 +76,7 @@ export default function Modal({ isOpen, onClose }) {
 
     // 👇 URL скрипта Google Apps Script
     const scriptUrl =
-      "https://script.google.com/macros/s/AKfycbzTMev__3oYGJ-bqLqh5qLphX9PcjPeMW6V0dgOuq1BxF0AGyrJ2iwOmVluUUOLCuZx/exec"; // <-- заменишь
+      "https://script.google.com/macros/s/AKfycbwyYgmcHwwsaMNpOxXoactgLAF2LpZtb--uvjRXC4a4mCjctuQJhvrn0eGxC9hmPPg_/exec"; // <-- заменишь
 
     const url = `${scriptUrl}?name=${encodeURIComponent(
       name
