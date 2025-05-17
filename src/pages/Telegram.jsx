@@ -8,7 +8,7 @@ export default function Telegram() {
     const timer = setTimeout(() => {
       setShowSuccess(false);
       window.location.href = "https://t.me/fnuranov"; // редирект
-    }, 3000);
+    }, 1000);
 
     return () => clearTimeout(timer); // очистка таймера
   }, []);

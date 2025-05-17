@@ -4,57 +4,71 @@ import { useNavigate } from "react-router-dom";
 export default function Modal({ isOpen, onClose }) {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("+998");
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+
   if (!isOpen) return null;
 
   const handleBackdropClick = (e) => {
     if (e.target === e.currentTarget) onClose();
   };
 
-  const handlePhoneChange = (e) => {
-    const value = e.target.value;
-    if (!value.startsWith("+998")) return;
-    setPhone(value.replace(/[^\d+]/g, ""));
+  const formatPhone = (value) => {
+    const digits = value.replace(/\D/g, "").slice(0, 12); // максимум 12 цифр (998xxxxxxxx)
+    let result = "+998";
+    if (digits.length > 3) result += ` (${digits.slice(3, 5)}`;
+    if (digits.length >= 5) result += `)-${digits.slice(5, 8)}`;
+    if (digits.length >= 8) result += `-${digits.slice(8, 10)}`;
+    if (digits.length >= 10) result += `-${digits.slice(10, 12)}`;
+    return result;
   };
 
+  const handlePhoneChange = (e) => {
+    const raw = e.target.value;
+    if (!raw.startsWith("+998")) return;
+    setPhone(formatPhone(raw));
+  };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  const cleanedPhone = phone.replace(/[^\d]/g, ""); // Удаляем всё кроме цифр
-  const finalPhone = "+" + cleanedPhone;            // Добавляем +
+    const cleanedPhone = phone.replace(/[^\d]/g, ""); // Только цифры
+    const finalPhone = "+" + cleanedPhone;
 
-  const scriptUrl = "https://script.google.com/macros/s/AKfycbzTMev__3oYGJ-bqLqh5qLphX9PcjPeMW6V0dgOuq1BxF0AGyrJ2iwOmVluUUOLCuZx/exec";
-  const proxyUrl = "https://corsproxy.io/?";
-  const finalUrl = `${proxyUrl}${encodeURIComponent(scriptUrl)}?name=${encodeURIComponent(name)}&phone=${encodeURIComponent(finalPhone)}`;
+    // Форматируем дату в формате "dd.MM.yyyy HH:mm:ss"
+    const now = new Date();
+    const formattedDate = now
+      .toLocaleString("ru-RU", { timeZone: "Asia/Tashkent" })
+      .replace(",", "");
 
-  try {
-    const res = await fetch(finalUrl);
-    const text = await res.text();
+    // 👇 URL скрипта Google Apps Script
+    const scriptUrl =
+      "https://script.google.com/macros/s/AKfycbzTMev__3oYGJ-bqLqh5qLphX9PcjPeMW6V0dgOuq1BxF0AGyrJ2iwOmVluUUOLCuZx/exec"; // <-- заменишь
 
-    let data = {};
+    const url = `${scriptUrl}?name=${encodeURIComponent(
+      name
+    )}&phone=${encodeURIComponent(finalPhone)}&date=${encodeURIComponent(
+      formattedDate
+    )}`;
+
     try {
-      data = JSON.parse(text);
-    } catch (err) {
-      alert("⚠️ Ответ сервера не JSON");
-      return;
-    }
+      const res = await fetch(url);
+      const json = await res.json();
 
-    if (data.result === "duplicate") {
-      alert("⚠️ Такой номер уже есть.");
-    } else if (data.result === "success") {
-      navigate('/telegram')
-      setName("");
-      setPhone("+998");
-      onClose();
-    } else {
-      alert("❌ Неизвестный ответ: " + text);
+      if (json.result === "duplicate") {
+        alert("⚠️ Такой номер уже есть.");
+      } else if (json.result === "success") {
+        alert("✅ Успешно отправлено!");
+        setName("");
+        setPhone("+998");
+        onClose();
+      } else {
+        alert("❌ Неизвестный ответ: " + JSON.stringify(json));
+      }
+    } catch (err) {
+      console.error("🔥 Ошибка сети:", err);
+      alert("🔥 Ошибка соединения с сервером");
     }
-  } catch (err) {
-    console.error("🔥 Network/proxy error:", err);
-    alert("🔥 Ошибка соединения с сервером");
-  }
-};
+  };
 
   return (
     <div className="modal__backdrop" onClick={handleBackdropClick}>
@@ -62,7 +76,7 @@ const handleSubmit = async (e) => {
         <button className="modal__close" onClick={onClose}>
           ×
         </button>
-        <h2 className="modal__title">Ro`yxatdan o`tish</h2>
+        <h2 className="modal__title">Ro'yxatdan o'tish</h2>
         <form onSubmit={handleSubmit} className="modal__form">
           <label>
             Ismingizni kiriting
@@ -79,7 +93,9 @@ const handleSubmit = async (e) => {
               type="tel"
               value={phone}
               onChange={handlePhoneChange}
+              placeholder="+998 (__) - ___ - __ - __"
               required
+              maxLength={19}
             />
           </label>
           <button type="submit" className="modal__submit">

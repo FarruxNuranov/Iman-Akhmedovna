@@ -19,7 +19,7 @@
 body {
   font-family: "Montserrat", sans-serif;
    min-height: 100vh; // минимум под экран
-  background-image: url("../assets/bg5.jpg");
+  background-image: url("../assets/bg6.jpg");
   background-position: center top; // позиционируем фон с верхнего центра
   background-repeat: no-repeat;
   background-size: cover; // покрываем всю ширину, высота масштабируется пропорц.
@@ -609,5 +609,13 @@ body {
 
   .telegram-subheading {
     text-align: center;
+  }
+
+  .timerText{
+text-align: center;
+  }
+
+  .timeValue {
+    font-size: 30px;
   }
 }
