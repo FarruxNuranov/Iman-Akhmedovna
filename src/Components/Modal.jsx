@@ -115,6 +115,7 @@ export default function Modal({ isOpen, onClose }) {
         </button>
         <h2 className="modal__title">Ro'yxatdan o'tish</h2>
         <form onSubmit={handleSubmit} className="modal__form">
+        <label >Pastdagi formani to'ldirishingiz bilan yopiq kanalga qo'shilasiz!</label>
           <label>
             Ismingizni kiriting
             <input
