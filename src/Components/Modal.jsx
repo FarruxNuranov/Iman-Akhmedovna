@@ -13,19 +13,53 @@ export default function Modal({ isOpen, onClose }) {
   };
 
   const formatPhone = (value) => {
-    const digits = value.replace(/\D/g, "").slice(0, 12); // максимум 12 цифр (998xxxxxxxx)
-    let result = "+998";
-    if (digits.length > 3) result += ` (${digits.slice(3, 5)}`;
-    if (digits.length >= 5) result += `)-${digits.slice(5, 8)}`;
-    if (digits.length >= 8) result += `-${digits.slice(8, 10)}`;
-    if (digits.length >= 10) result += `-${digits.slice(10, 12)}`;
-    return result;
+    // Получаем только цифры из введенного значения
+    const digits = value.replace(/\D/g, "");
+    
+    // Если длина меньше или равна 3 (код страны), возвращаем только +998
+    if (digits.length <= 3) return "+998";
+    
+    // Форматируем номер по частям
+    let formatted = "+998";
+    
+    // Добавляем код города (2 цифры)
+    if (digits.length > 3) {
+      formatted += ` (${digits.slice(3, 5)}`;
+    }
+    
+    // Добавляем первую часть номера (3 цифры)
+    if (digits.length > 5) {
+      formatted += `)-${digits.slice(5, 8)}`;
+    }
+    
+    // Добавляем вторую часть (2 цифры)
+    if (digits.length > 8) {
+      formatted += `-${digits.slice(8, 10)}`;
+    }
+    
+    // Добавляем последние цифры (если есть)
+    if (digits.length > 10) {
+      formatted += `-${digits.slice(10, 12)}`;
+    }
+    
+    return formatted;
   };
 
   const handlePhoneChange = (e) => {
-    const raw = e.target.value;
-    if (!raw.startsWith("+998")) return;
-    setPhone(formatPhone(raw));
+    const input = e.target.value;
+    
+    // Если пользователь пытается удалить +998, не даём это сделать
+    if (input.length < 4) {
+      setPhone("+998");
+      return;
+    }
+    
+    // Проверяем, начинается ли с +998
+    if (!input.startsWith("+998")) {
+      return;
+    }
+    
+    setPhone(formatPhone(input));
   };
 
   const handleSubmit = async (e) => {
