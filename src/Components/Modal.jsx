@@ -57,7 +57,7 @@ export default function Modal({ isOpen, onClose }) {
       if (json.result === "duplicate") {
         alert("⚠️ Такой номер уже есть.");
       } else if (json.result === "success") {
-        alert("✅ Успешно отправлено!");
+        navigate("/telegram")
         setName("");
         setPhone("+998");
         onClose();
