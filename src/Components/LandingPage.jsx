@@ -34,7 +34,7 @@ export default function LandingPage() {
           {/* Календарь */}
           <div className="calendar">
             <FiCalendar className="calendarIcon" />
-            <span className="calendarText">13–14–15 may | 20:00</span>
+            <span className="calendarText">Boshlanish vaqti: 3–4–5 iyun | 21:00</span>
           </div>
           <p className="subtitle">
             Iman Akhmedovna 3 kunlik <strong>bepul</strong> masterklass
@@ -74,7 +74,7 @@ export default function LandingPage() {
             <p className="lead">
               Master klass- 3 kun yopiq telegram kanalda bo’ladi.
               <br />
-              Ro‘yxatdan o‘ting — (<strong>2 daqiqa ichida</strong> BEPUL)
+              Ro‘yxatdan o‘ting — (<strong>30 soniya ichida</strong> BEPUL)
             </p>
             <p className="desc">
               3 kechalik BEPUL masterklassda quyidagilarni bilib olasiz:
