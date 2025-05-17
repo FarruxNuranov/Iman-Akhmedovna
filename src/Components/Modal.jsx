@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 export default function Modal({ isOpen, onClose }) {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("+998");
+  const [phoneError, setPhoneError] = useState("");
   const navigate = useNavigate();
 
   if (!isOpen) return null;
@@ -64,8 +65,9 @@ export default function Modal({ isOpen, onClose }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setPhoneError(""); // Сбрасываем ошибку при новой попытке
 
-    const cleanedPhone = phone.replace(/[^\d]/g, ""); // Только цифры
+    const cleanedPhone = phone.replace(/[^\d]/g, "");
     const finalPhone = "+" + cleanedPhone;
 
     // Форматируем дату в формате "dd.MM.yyyy HH:mm:ss"
@@ -89,18 +91,19 @@ export default function Modal({ isOpen, onClose }) {
       const json = await res.json();
 
       if (json.result === "duplicate") {
-        alert("⚠️ Такой номер уже есть.");
+        setPhoneError("⚠️ Bu raqam ro`yxatdan otgan");
       } else if (json.result === "success") {
         navigate("/telegram")
         setName("");
         setPhone("+998");
+        setPhoneError("");
         onClose();
       } else {
-        alert("❌ Неизвестный ответ: " + JSON.stringify(json));
+        setPhoneError("❌ Неизвестный ответ");
       }
     } catch (err) {
       console.error("🔥 Ошибка сети:", err);
-      alert("🔥 Ошибка соединения с сервером");
+      setPhoneError("🔥 Ошибка соединения с сервером");
     }
   };
 
@@ -131,6 +134,7 @@ export default function Modal({ isOpen, onClose }) {
               required
               maxLength={19}
             />
+            {phoneError && <div className="input-error">{phoneError}</div>}
           </label>
           <button type="submit" className="modal__submit">
             Отправить
